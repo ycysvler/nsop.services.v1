@@ -45,6 +45,6 @@ module.exports = {
 
     // 父级中心节点地址
     parent:{
-        host:'127.0.0.1'
+        host:'10.211.55.7'
     }
 };

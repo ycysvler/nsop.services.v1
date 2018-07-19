@@ -27,7 +27,7 @@ module.exports = function(router){
     /*
     * 远端 > 本地，同步数据
     * @query  {string} docname 文档名称
-    * @return {object} datas   多条数据
+    * @query  {object} datas   多条数据
     * */
     router.post('/async', async(ctx)=>{
         let dsLogic = new DataSyncLogic();

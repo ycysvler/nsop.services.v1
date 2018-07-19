@@ -10,15 +10,15 @@ const mongoose = require('mongoose');
 
 //module.exports =
 module.exports = class DataSyncLogic {
-    getParentHost() {
-        return '127.0.0.1';
-    }
-
     getLocalMongodb() {
         return config.mongodb.uri;
     }
-
-    getBaseDocLastData(docname) {
+    /*
+    * 获取指定表的最后更新时间
+    * @query  {string} docname 文档名称
+    * @result {date}           最后更新时间
+    * */
+    getBaseDocLastDate(docname) {
         let self = this;
         return new Promise(async (resolve, reject) => {
             try {
@@ -75,11 +75,47 @@ module.exports = class DataSyncLogic {
         });
     };
 
-    addBaseDocNewData(docname, datas){
+    removeBaseDocData(docname, datas){
+        let ids = [];
+        for(let data of datas){
+            ids.push(data['_id']);
+        }
 
+        let self = this;
+        return new Promise(async (resolve, reject) => {
+            try {
+                let url = self.getLocalMongodb();
+                MongoClient.connect(url, function (err, db) {
+                    if (err) throw err;
+                    let dbo = db.db("nsop_base");
+                    dbo.collection(docname)
+                        .remove({"_id": {$in: ids}},async (err, items) => {
+                            if (err) {
+                                reject(err);
+                            }
+                            else {
+                                resolve(items);
+                            }
+                            db.close();
+                        });
+                });
+            } catch (err) {
+                reject(err)
+            }
+        });
+    }
+    /*
+    * 向指定文档添加多条数据
+    * @query  {string} docname 文档名称
+    * @query  {object} datas   多条数据
+    * */
+    async addBaseDocNewData(docname, datas){
         for(let data of datas){
             data['_id'] = mongoose.Types.ObjectId(data['_id']);
         }
+
+        // 删除掉已经存在的旧数据
+        await this.removeBaseDocData(docname, datas);
 
         let self = this;
         return new Promise(async (resolve, reject) => {
@@ -105,12 +141,16 @@ module.exports = class DataSyncLogic {
         });
     }
 
+    /*
+    * 获取某文档的多条数据
+    * @query  {string} docname 文档名称
+    * @query  {object} ids     数据ID
+    * */
     async getBaseDocDatas(docname, ids){
         // 日了，非要转一次ObjectID,不然_id:{$in:ids}找不到
         let oids=[];
         for(let id of ids){
             oids.push( mongoose.Types.ObjectId(id));
-
         }
 
         let self = this;
@@ -138,6 +178,11 @@ module.exports = class DataSyncLogic {
         });
     }
 
+    /*
+    * 向指定收费站下发数据
+    * @query  {string} docname 文档名称
+    * @query  {object} ids     数据ID
+    * */
     async sendBaseDocDatas(orgid, docname, ids){
         let orgLogic = new OrganizationLogic();
         let orgItem = await orgLogic.single(orgid);
@@ -168,31 +213,5 @@ module.exports = class DataSyncLogic {
                 reject(err)
             }
         });
-
-
     }
-
 };
-
-async function tt() {
-    let logic = new DataSyncLogic();
-    // let data = await logic.getBaseDocLastDate("organizations");
-    // console.log(data);
-    // console.log(typeof data);
-    // let result = await logic.getBaseDocNewDate("organizations", '2018-07-18T07:57:21.387Z');
-    let result = await logic.addBaseDocNewDate("organizations",[{
-        "_id" : "5b4ef22a86d3924074b18f75",
-            "orgid" : "043",
-            "code" : "0",
-            "type" : -1,
-            "name" : "吉林",
-            "parentid" : "0",
-            "host" : "127.0.0.1",
-            "updatetime" : new Date(),
-            "__v" : 0
-    }]);
-
-
-
-    console.log(result);
-}

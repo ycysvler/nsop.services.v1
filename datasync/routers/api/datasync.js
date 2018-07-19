@@ -25,10 +25,10 @@ module.exports = function(router){
 
 
     /*
-   * any > 中心，获取源码详情
-   * @query  {string} id      数据ID
-   * @return {object}         单条数据
-   * */
+    * 远端 > 本地，同步数据
+    * @query  {string} docname 文档名称
+    * @return {object} datas   多条数据
+    * */
     router.post('/async', async(ctx)=>{
         let dsLogic = new DataSyncLogic();
         let ok = tools.required(ctx, ['docname']);
@@ -36,6 +36,24 @@ module.exports = function(router){
             let docname = ctx.request.body['docname'];
             let datas = ctx.request.body['datas'];
             let item = await dsLogic.addBaseDocNewData(docname, datas);
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
+    /*
+    * 本地 > 远端，发送同步数据
+    * @query  {string} orgid   远端节点ID
+    * @query  {string} docname 文档名称
+    * @return {object} ids     数据ID
+    * */
+    router.post('/send', async(ctx)=>{
+        let dsLogic = new DataSyncLogic();
+        let ok = tools.required(ctx, ['docname']);
+        if (ok) {
+            let orgid = ctx.request.body['orgid'];
+            let docname = ctx.request.body['docname'];
+            let ids = ctx.request.body['ids'];
+            let item = await dsLogic.sendBaseDocDatas(orgid, docname, ids);
             ctx.body = {code: 200, data: item};
         }
     });

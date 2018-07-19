@@ -7,7 +7,7 @@
 const logger = require('../utils/logger');                // 引用日志组建
 
 const consumingLog = logger('time-consuming');            // 日志
-const dataDebugLog = logger('data-debug','debug');        // 日志
+//const dataDebugLog = logger('data-debug','debug');        // 日志
 
 module.exports = async function(ctx, next){
     const start = Date.now();                            // 开始时间

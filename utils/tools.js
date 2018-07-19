@@ -5,7 +5,7 @@
  */
 
 const logger = require('./logger');                             // 引用日志组建
-const log = logger('app');                                      // 日志
+const log = logger('utils');                                    // 日志
 
 class tools {
     /**

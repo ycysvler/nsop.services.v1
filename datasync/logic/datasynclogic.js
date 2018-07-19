@@ -102,7 +102,9 @@ module.exports = class DataSyncLogic {
             }
         });
     }
-}
+
+
+};
 
 async function tt() {
     let logic = new DataSyncLogic();

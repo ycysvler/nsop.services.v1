@@ -36,7 +36,7 @@ module.exports = class OrganizationLogic {
      */
     single(id) {
         return new Promise((resolve, reject) => {
-            let doc = getMongoPool().Source;
+            let doc = getMongoPool().Organization;
             doc.findOne({orgid: id},  function (err, Item) {
                 if (err) {
                     reject(err);

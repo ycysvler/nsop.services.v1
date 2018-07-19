@@ -106,6 +106,13 @@ module.exports = class DataSyncLogic {
     }
 
     async getBaseDocDatas(docname, ids){
+        // 日了，非要转一次ObjectID,不然_id:{$in:ids}找不到
+        let oids=[];
+        for(let id of ids){
+            oids.push( mongoose.Types.ObjectId(id));
+
+        }
+
         let self = this;
         return new Promise(async (resolve, reject) => {
             try {
@@ -114,7 +121,7 @@ module.exports = class DataSyncLogic {
                     if (err) throw err;
                     let dbo = db.db("nsop_base");
                     dbo.collection(docname)
-                        .find({"_id": {$in: ids}})
+                        .find({"_id": {$in: oids}})
                         .toArray(async (err, items) => {
                             if (err) {
                                 reject(err);
@@ -136,16 +143,7 @@ module.exports = class DataSyncLogic {
         let orgItem = await orgLogic.single(orgid);
         let datas = await this.getBaseDocDatas(docname, ids);
 
-        if(!orgItem){
-            return null;
-        }
-
-        console.log('org', orgItem);
-
-
         let body = {"docname":docname, datas:datas};
-
-        console.log('body', body);
 
         let options = {
             method: 'post',

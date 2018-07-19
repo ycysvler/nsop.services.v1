@@ -2,7 +2,9 @@
  * Created by VLER on 2018/7/1.
  */
 const moment = require('moment');
+const request = require('request');
 const MongoClient = require('mongodb').MongoClient;
+const OrganizationLogic = require('../../db/mongo/dao/organization');
 const config = require('../../config/config');
 const mongoose = require('mongoose');
 
@@ -16,7 +18,7 @@ module.exports = class DataSyncLogic {
         return config.mongodb.uri;
     }
 
-    getBaseDocLastDate(docname) {
+    getBaseDocLastData(docname) {
         let self = this;
         return new Promise(async (resolve, reject) => {
             try {
@@ -47,7 +49,7 @@ module.exports = class DataSyncLogic {
         });
     }
 
-    getBaseDocNewDate(docname, date) {
+    getBaseDocNewData(docname, date) {
         let self = this;
         return new Promise(async (resolve, reject) => {
             try {
@@ -73,7 +75,7 @@ module.exports = class DataSyncLogic {
         });
     };
 
-    addBaseDocNewDate(docname, datas){
+    addBaseDocNewData(docname, datas){
 
         for(let data of datas){
             data['_id'] = mongoose.Types.ObjectId(data['_id']);
@@ -103,6 +105,65 @@ module.exports = class DataSyncLogic {
         });
     }
 
+    async getBaseDocDatas(docname, ids){
+        let self = this;
+        return new Promise(async (resolve, reject) => {
+            try {
+                let url = self.getLocalMongodb();
+                MongoClient.connect(url, function (err, db) {
+                    if (err) throw err;
+                    let dbo = db.db("nsop_base");
+                    dbo.collection(docname)
+                        .find({"_id": {$in: ids}})
+                        .toArray(async (err, items) => {
+                            if (err) {
+                                reject(err);
+                            }
+                            else {
+                                resolve(items);
+                            }
+                            db.close();
+                        });
+                });
+            } catch (err) {
+                reject(err)
+            }
+        });
+    }
+
+    async sendBaseDocDatas(orgid, docname, ids){
+        let orgLogic = new OrganizationLogic();
+        let orgItem = await orgLogic.single(orgid);
+        let datas = await this.getBaseDocDatas(docname, ids);
+
+        let body = {"docname":docname, datas:datas};
+
+        let options = {
+            method: 'post',
+            url: `http://${orgItem.host}` + '/nsop/datasync/api/async',
+            json: true,
+            headers: {
+                "content-type": "application/json",
+            },
+            body:body
+        };
+
+        return new Promise((resolve, reject) => {
+            try {
+                request(options, function (err, res, body) {
+                    if (err) {
+                        reject(err);
+                    }else {
+                        resolve(body);
+                    }
+                });
+            } catch (err) {
+                reject(err)
+            }
+        });
+
+
+    }
 
 };
 

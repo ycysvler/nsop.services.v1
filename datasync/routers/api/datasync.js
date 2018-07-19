@@ -35,7 +35,7 @@ module.exports = function(router){
         if (ok) {
             let docname = ctx.request.body['docname'];
             let datas = ctx.request.body['datas'];
-            let item = await dsLogic.addBaseDocNewDate(docname, datas);
+            let item = await dsLogic.addBaseDocNewData(docname, datas);
             ctx.body = {code: 200, data: item};
         }
     });

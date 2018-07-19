@@ -147,7 +147,7 @@ module.exports = class DataSyncLogic {
 
         let options = {
             method: 'post',
-            url: `http://${orgItem.host}` + '4998/nsop/datasync/api/async',
+            url: `http://${orgItem.host}` + ':4998/nsop/datasync/api/async',
             json: true,
             headers: {
                 "content-type": "application/json",

@@ -47,12 +47,14 @@ module.exports = function(router){
     * @return {object} ids     数据ID
     * */
     router.post('/send', async(ctx)=>{
+
         let dsLogic = new DataSyncLogic();
         let ok = tools.required(ctx, ['docname']);
         if (ok) {
             let orgid = ctx.request.body['orgid'];
             let docname = ctx.request.body['docname'];
             let ids = ctx.request.body['ids'];
+
             let item = await dsLogic.sendBaseDocDatas(orgid, docname, ids);
             ctx.body = {code: 200, data: item};
         }

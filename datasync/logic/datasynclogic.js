@@ -136,7 +136,16 @@ module.exports = class DataSyncLogic {
         let orgItem = await orgLogic.single(orgid);
         let datas = await this.getBaseDocDatas(docname, ids);
 
+        if(!orgItem){
+            return null;
+        }
+
+        console.log('org', orgItem);
+
+
         let body = {"docname":docname, datas:datas};
+
+        console.log('body', body);
 
         let options = {
             method: 'post',

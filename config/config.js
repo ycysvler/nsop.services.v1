@@ -46,5 +46,10 @@ module.exports = {
     // 父级中心节点地址
     parent:{
         host:'10.211.55.7'
+    },
+
+    // 当前节点
+    current:{
+
     }
 };

@@ -6,6 +6,7 @@
 
 const logger = require('./logger');                             // 引用日志组建
 const log = logger('utils');                                    // 日志
+const fs = require('fs');
 
 class tools {
     /**
@@ -42,6 +43,26 @@ class tools {
     sleep(time) {
         return new Promise((resolve) => setTimeout(resolve, time));
     }
+
+    getCurrentOrgID(){
+        return "0431.054";
+    }
+
+    async mkdir(dirpath){
+        let ex = fs.existsSync(dirpath);
+        if(!ex){
+            fs.mkdirSync(dirpath);
+        }
+    }
+
+    pathExists(path){
+        return new Promise((resolve) => {
+            fs.exists(path, (exists)=>{
+                resolve(exists);
+            })
+        });
+    }
+
 }
 
 module.exports = new tools();

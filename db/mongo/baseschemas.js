@@ -28,11 +28,23 @@ module.exports = class Schemas{
             type: {type: String},                   // 类型
             version: {type: String},                // 版本
             describe: String,                       // 描述
+            services:Array,                         // 对应的服务列表
             sourcepath:{type: String},              // 源码压缩包位置
             targetpath:{type: String},              // 覆盖目标位置
             updatetime: {type: Date,index: true}    // 更新时间
         });
         this.Source = conn.model('Source', this.sourceSchema);
+
+        // 源码表
+        this.orgsourceSchema = new mongoose.Schema({
+            orgid:{type:String, index:true},
+            type: {type: String},                           // 类型
+            cversion: {type: String},                       // 当前版本
+            tversion: {type: String},                       // 目标版本
+            state: {type: Number},                          // 0 等待更新、1 更新成功、 -1 更新失败
+            updatetime: {type: Date,index: true}            // 更新时间
+        });
+        this.OrgSource = conn.model('OrgSource', this.orgsourceSchema);
     }
 };
 

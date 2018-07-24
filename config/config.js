@@ -20,7 +20,7 @@ module.exports = {
         port: 9306,
         user: 'admin',
         password: 'admin',
-        database: 'URCS_EOS'
+        database: 'mysql'
     },
 
     // redis 相关配置

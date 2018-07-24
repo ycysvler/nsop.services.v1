@@ -8,7 +8,9 @@ const fs = require('fs');
 const tools = require('../../../utils/tools');
 const uploadFile = require('../../../utils/upload');
 const SourceLogic = require('../../../db/mongo/dao/source');
+const HaMasterLogic = require('../../logic/hamasterlogic');
 const sourceLogic = new SourceLogic();
+const haLogic = new HaMasterLogic();
 
 module.exports = function(router){
     router.get('/hello', async(ctx)=>{
@@ -20,10 +22,11 @@ module.exports = function(router){
     * @query  {string} id      数据ID
     * @return {object}         单条数据
     * */
-    router.get('/source', async(ctx)=>{
+    router.get('/source/:id', async(ctx)=>{
         let ok = tools.required(ctx, ['id']);
         if (ok) {
-            let id = ctx.request.query['id'];
+            //let id = ctx.request.query['id'];
+            let id = ctx.params.id;
             let item = await sourceLogic.single(id);
             ctx.body = {code: 200, data: item};
         }
@@ -83,6 +86,21 @@ module.exports = function(router){
         if (ok) {
             let body = ctx.request.body;
             let item = await sourceLogic.create(body);
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
+    /*
+    * 中心 > 收费站，更新指定服务，指定版本
+    * @query  {object} body    源码数据
+    * @return {null}
+    * */
+    router.get('/update1/:id', async(ctx)=>{
+        let ok = tools.required(ctx, ['id']);
+        //
+        if (ok) {
+            let id = ctx.params.id;
+            let item = await haLogic.update1(id);
             ctx.body = {code: 200, data: item};
         }
     });

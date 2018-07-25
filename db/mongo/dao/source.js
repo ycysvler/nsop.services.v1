@@ -58,7 +58,7 @@ module.exports = class SourceLogic {
                     if (err) {
                         reject(err);
                     } else {
-
+                        Item.sourcepath = sourcepath;
                         resolve(Item);
                     }
                 });

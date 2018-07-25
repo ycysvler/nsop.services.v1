@@ -48,6 +48,7 @@ module.exports = class SourceLogic {
     }
 
     updatesourcepath(id, sourcepath) {
+        console.log('id', id);
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Source;
             doc.findOneAndUpdate(
@@ -57,7 +58,7 @@ module.exports = class SourceLogic {
                     if (err) {
                         reject(err);
                     } else {
-                        Item.sourcepath = sourcepath;
+
                         resolve(Item);
                     }
                 });

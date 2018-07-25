@@ -44,7 +44,9 @@ module.exports = class HaMasterLogic {
         let orgsLogic = new OrgSourceLogic();
 
         // 查找版本信息
-        let source = await sourceLogic.single(id);
+        await sourceLogic.remove(id);
+
+        let source = null;
 
         if(!source){
             // 如果不存在，去服务器端获取

@@ -47,6 +47,19 @@ module.exports = class SourceLogic {
         });
     }
 
+    remove(id){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Source;
+            doc.remove({_id: id}, function (err, Item) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Item);
+                }
+            });
+        });
+    }
+
     updatesourcepath(id, sourcepath) {
         console.log('id', id);
         return new Promise((resolve, reject) => {

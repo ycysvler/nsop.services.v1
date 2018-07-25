@@ -8,7 +8,7 @@ const exec = require('child_process').exec;
 
 function uzip(zip, target){
     return new Promise((resolve, reject) => {
-        let command = 'unzip '+ zip +' -d ' + target;
+        let command = 'unzip -o '+ zip +' -d ' + target;
         exec(command, function (err, stdout, stderr) {
             if (err) {
                 reject(stderr);

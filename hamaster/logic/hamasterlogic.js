@@ -8,6 +8,7 @@ const request = require('request');
 const tools = require('../../utils/tools');
 const config = require('../../config/config');
 const download = require('../../utils/download');
+const uzip = require('../../utils/uzip');
 const SourceLogic = require('../../db/mongo/dao/source');
 const OrgSourceLogic = require('../../db/mongo/dao/orgsource');
 
@@ -68,19 +69,21 @@ module.exports = class HaMasterLogic {
         let state = 0;      // 准备更新
 
         // 下载 zip
-        let downd = await this.downloadZip(source);
+        let zippath = await this.downloadZip(source);
 
-        if(downd){
+        console.log('zippath', zippath);
+
+        if(fs.existsSync(zippath)){
+            // 停 pm2
+            console.log('uzip', zippath);
+            // unzip
+            await uzip(zippath, source.targetpath);
+            // 起 pm2
+
 
         }else{
             state = -1;     // 下载失败
         }
-
-        // 停 pm2
-
-        // unzip
-
-        // 起 pm2
 
         // 更新 orgsource
         let newdata = {state:state};
@@ -95,13 +98,19 @@ module.exports = class HaMasterLogic {
 
     async downloadZip(source){
         let zipurl = `http://${config.parent.host}:${config.server.hamaster.port}${source.sourcepath}`;
-
-        await tools.mkdir(source.targetpath);
-
+        // 压缩包文件名
         let filename = path.basename(source.sourcepath);
-        await download(zipurl, source.targetpath + filename);
+        // 临时存放目录
+        let temppath = path.join(__dirname, `../public/sources/${source.type}/${source.version}/`);
 
-        return fs.existsSync(source.targetpath + filename);
+        await tools.mkdir(temppath);
+        // 全路径
+        let fullpath = `${temppath}${filename}`;
+        // 下载
+        await download(zipurl, fullpath);
+
+        return fullpath;//source.targetpath + filename;
+
     }
 
     /**

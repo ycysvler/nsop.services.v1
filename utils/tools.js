@@ -7,6 +7,7 @@
 const logger = require('./logger');                             // 引用日志组建
 const log = logger('utils');                                    // 日志
 const fs = require('fs');
+const exec = require('child_process').exec;
 
 class tools {
     /**
@@ -55,14 +56,18 @@ class tools {
         }
     }
 
-    pathExists(path){
-        return new Promise((resolve) => {
-            fs.exists(path, (exists)=>{
-                resolve(exists);
-            })
+    pm2(command) {
+        return new Promise((resolve, reject) => {
+            exec(command, function (err, stdout, stderr) {
+                if (err) {
+                    reject(stderr);
+                }
+                else {
+                    resolve(stdout);
+                }
+            });
         });
     }
-
 }
 
 module.exports = new tools();

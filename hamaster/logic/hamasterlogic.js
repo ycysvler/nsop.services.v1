@@ -75,11 +75,17 @@ module.exports = class HaMasterLogic {
 
         if(fs.existsSync(zippath)){
             // 停 pm2
-            console.log('uzip', zippath);
+            for(let cmd of source.services){
+                console.log('stop', cmd);
+                await tools.pm2(cmd.stop);
+            }
             // unzip
             await uzip(zippath, source.targetpath);
             // 起 pm2
-
+            for(let cmd of source.services){
+                console.log('start', cmd);
+                await tools.pm2(cmd.start);
+            }
 
         }else{
             state = -1;     // 下载失败

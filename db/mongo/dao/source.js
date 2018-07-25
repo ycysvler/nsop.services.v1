@@ -11,13 +11,13 @@ module.exports = class SourceLogic {
      * @return {object}          ？？
      */
     create(data) {
-        return new Promise(async(resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 let Doc = getMongoPool().Source;
                 let item = new Doc(data);
                 item.updatetime = new moment();
 
-                item.save(async(err, item) => {
+                item.save(async (err, item) => {
                     if (!err) {
                         resolve(item);
                     } else {
@@ -37,7 +37,7 @@ module.exports = class SourceLogic {
     single(id) {
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Source;
-            doc.findOne({_id: id},  function (err, Item) {
+            doc.findOne({_id: id}, function (err, Item) {
                 if (err) {
                     reject(err);
                 } else {
@@ -47,16 +47,19 @@ module.exports = class SourceLogic {
         });
     }
 
-    updatesourcepath(id, sourcepath){
+    updatesourcepath(id, sourcepath) {
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Source;
-            doc.findOneAndUpdate({_id: id}, {sourcepath:sourcepath}, function (err, Item) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(Item);
-                }
-            });
+            doc.findOneAndUpdate(
+                {_id: id},
+                {sourcepath: sourcepath, updatetime: new moment()},
+                function (err, Item) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(Item);
+                    }
+                });
         });
     }
 };

@@ -33,7 +33,7 @@ app.use(koastatic(path.join(__dirname, '../public')));      // 处理静态资�
 app.use(bodyparser());                                      // 使用ctx.body解析中间件
 app.use(consuming);                                         // 计算耗时中间件
 
-const root = loader(path.join(__dirname, './api'), '/nsop/model/api');
+const root = loader(path.join(__dirname, './routers/api'), '/nsop/model/api');
 app.use(root.routes()).use(root.allowedMethods());          // 加载路由
 
 app.listen(config.server.model.port);                       // 启动http服务

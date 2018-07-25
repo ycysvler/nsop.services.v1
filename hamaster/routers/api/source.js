@@ -67,9 +67,11 @@ module.exports = function(router){
             });
 
             let filename = path.basename(f.path);
+
             let result = await sourceLogic.updatesourcepath(id,
                 '/sources/' +  item.type + '/' + item.version + '/' + filename);
             ctx.body = {code: 200, data: result};
+
         }
     });
 

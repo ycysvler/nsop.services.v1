@@ -17,6 +17,11 @@ module.exports = function(router){
         ctx.body = {"name":"hello"};
     });
 
+    router.get('/views', async(ctx)=>{
+        await ctx.render('index',{title:'ttt'});
+
+    });
+
     /*
     * any > 中心，获取源码详情
     * @query  {string} id      数据ID

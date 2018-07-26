@@ -39,5 +39,35 @@ module.exports = function(router){
         }
     });
 
+    /*
+        * 收费站 > 中心, 注册新机构
+        * @query  {object} body    源码数据
+        * @return {object}         操作结果
+        * */
+    router.post('/org/report', async(ctx)=>{
+        let ok = tools.required(ctx, ['code','name','host']);
+        if (ok) {
+            let body = ctx.request.body;
+            console.log(body.centerip);
+            let parent = await orgLogic.singleByIp(body.centerip);
 
+            if(parent){
+                await orgLogic.removeByCode(body.code);
+
+                let data = {
+                    orgid:`${parent.orgid}.${body.code}`,
+                    code:body.code,
+                    type:1,
+                    name:body.name,
+                    parentid:parent.orgid,
+                    host:body.host
+                };
+                let item = await orgLogic.create(data);
+                ctx.body = {code: 200, data: item};
+
+            }else{
+                ctx.body = {code: 404, data: '无法查找到中心数据！'};
+            }
+        }
+    });
 };

@@ -46,4 +46,33 @@ module.exports = class OrganizationLogic {
             });
         });
     }
+    /**
+     * 获取单条数据
+     * @return {array}  收费站信息
+     */
+    singleByIp(host){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Organization;
+            doc.findOne({host: host},  function (err, Item) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Item);
+                }
+            });
+        });
+    }
+
+    removeByCode(code){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Source;
+            doc.remove({code: code}, function (err, Item) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Item);
+                }
+            });
+        });
+    }
 };

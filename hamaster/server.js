@@ -6,6 +6,7 @@
 
 const path = require('path');                               // 基础库
 const moment = require('moment');                           // 时间日期库
+const views = require('koa-views');                         // 模版
 const cors = require('koa2-cors');                          // 引用跨域库
 const Koa = require('koa');                                 // 引用koa框架
 const bodyparser = require('koa-bodyparser');               // 加载bodyparser中间件
@@ -27,7 +28,9 @@ app.on('error', (err, ctx) => {                             // 全局错误处�
     console.log(err);
     //log.error({title: err.toString(), stack: err.stack}, 'server error');
 });
-
+app.use(views(path.join(__dirname,'./views'),{
+    extension:'ejs'
+}));
 app.use(cors({credentials: true}));                         // 处理跨域(设置credentials：true,是要支持客户端跨域使用cookie)
 app.use(koastatic(path.join(__dirname, './public')));       // 处理静态资源
 app.use(bodyparser());                                      // 使用ctx.body解析中间件

@@ -45,6 +45,18 @@ module.exports = class Schemas{
             updatetime: {type: Date,index: true}            // 更新时间
         });
         this.OrgSource = conn.model('OrgSource', this.orgsourceSchema);
+
+        // 当前收费站
+        this.currentSchema = new mongoose.Schema({
+            orgid: {type: String, index: {unique: true, dropDups: true}},   // 收费站ID：[区号][code]
+            code: {type: String, index: {unique: true, dropDups: true}},    // 编号
+            type: {type: Number},                                           // 0 中心， 1 收费站
+            name: String,                                                   // 收费站名称
+            parentid:{type: String},                                        // 上级ID
+            host:{type: String},                                            // IP地址
+            updatetime: {type: Date,index: true}                            // 更新时间
+        });
+        this.Current = conn.model('Current', this.currentSchema);
     }
 };
 

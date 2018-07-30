@@ -8,6 +8,7 @@ const fs = require('fs');
 const tools = require('../../../utils/tools');
 const uploadFile = require('../../../utils/upload');
 const OrganizationLogic = require('../../../db/mongo/dao/organization');
+const CurrentLogic = require('../../../db/mongo/dao/current');
 const orgLogic = new OrganizationLogic();
 
 module.exports = function(router){
@@ -58,6 +59,23 @@ module.exports = function(router){
         if (ok) {
             let body = ctx.request.body;
             let item = await orgLogic.create(body);
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
+    /*
+    * 管理系统 > 中心, 新增源码版本数据
+    * @query  {object} body    源码数据
+    * @return {object}         操作结果
+    * */
+    router.post('/regist', async(ctx)=>{
+        let ok = tools.required(ctx, ['orgid','code','name','parentid','host']);
+
+        let currentLogic = new CurrentLogic();
+        if (ok) {
+            let body = ctx.request.body;
+            let item = await orgLogic.create(body);
+            item = await currentLogic.create(body);
             ctx.body = {code: 200, data: item};
         }
     });

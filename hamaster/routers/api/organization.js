@@ -26,11 +26,34 @@ module.exports = function(router){
     });
 
     /*
+    * any > 中心，获取源码详情
+    * @query  {string} id      数据ID
+    * @return {object}         单条数据
+    * */
+    router.get('/organizations', async(ctx)=>{
+            let items = await orgLogic.list();
+            ctx.body = {code: 200, data: items};
+
+    });
+
+    /*
+    * 中心 > 中心，删除
+    * @query  {string} ids     多条数据ID
+    * @return {object}         单条数据
+    * */
+    router.delete('/organizations', async(ctx)=>{
+        console.log('organizations',ctx.request.body);
+        let items = await orgLogic.removeByIds(ctx.request.body);
+        ctx.body = {code: 200, data: items};
+
+    });
+
+    /*
     * 管理系统 > 中心, 新增源码版本数据
     * @query  {object} body    源码数据
     * @return {object}         操作结果
     * */
-    router.post('/organization', async(ctx)=>{
+    router.post('/organizations', async(ctx)=>{
         let ok = tools.required(ctx, ['orgid','code','name','parentid','host']);
         if (ok) {
             let body = ctx.request.body;

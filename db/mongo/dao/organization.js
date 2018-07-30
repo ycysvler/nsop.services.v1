@@ -47,6 +47,23 @@ module.exports = class OrganizationLogic {
         });
     }
     /**
+     * 获取全部数据
+     * @return {array}  收费站信息
+     */
+    list(){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Organization;
+            doc.find({},  function (err, Item) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Item);
+                }
+            });
+        });
+    }
+
+    /**
      * 获取单条数据
      * @return {array}  收费站信息
      */
@@ -65,8 +82,21 @@ module.exports = class OrganizationLogic {
 
     removeByCode(code){
         return new Promise((resolve, reject) => {
-            let doc = getMongoPool().Source;
+            let doc = getMongoPool().Organization;
             doc.remove({code: code}, function (err, Item) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Item);
+                }
+            });
+        });
+    }
+
+    removeByIds(ids){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Organization;
+            doc.deleteMany({_id:{$in:ids}}, function (err, Item) {
                 if (err) {
                     reject(err);
                 } else {

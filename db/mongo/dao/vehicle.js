@@ -4,7 +4,7 @@
 const moment = require('moment');
 const getMongoPool = require('../pool.js');
 
-module.exports = class CurrentLogic {
+module.exports = class VehicleLogic {
     /**
      * 创建
      * @param  {object} data     信息
@@ -13,7 +13,7 @@ module.exports = class CurrentLogic {
     create(data) {
         return new Promise(async(resolve, reject) => {
             try {
-                let Doc = getMongoPool().Current;
+                let Doc = getMongoPool().Vehicle;
                 let item = new Doc(data);
                 item.updatetime = new moment();
 
@@ -28,26 +28,5 @@ module.exports = class CurrentLogic {
                 reject(err)
             }
         });
-    }
-
-    /**
-     * 获取单条数据
-     * @return {array}  收费站信息
-     */
-    single() {
-        return new Promise((resolve, reject) => {
-            let doc = getMongoPool().Current;
-            doc.find({},  function (err, Item) {
-                if (err) {
-                    reject(err);
-                } else {
-                    if(Item){
-                        resolve(Item[0]);
-                    }else{
-                        resolve(null);
-                    }
-                }
-            });
-        });
-    }
+    } 
 };

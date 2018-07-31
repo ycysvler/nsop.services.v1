@@ -49,7 +49,7 @@ module.exports = class DataSyncLogic {
         });
     }
 
-    getBaseDocNewData(docname, date) {
+    getBaseDocNewData(docname, date,count) {
         let self = this;
         return new Promise(async (resolve, reject) => {
             try {
@@ -58,7 +58,8 @@ module.exports = class DataSyncLogic {
                     if (err) throw err;
                     let dbo = db.db("nsop_base");
                     dbo.collection(docname)
-                        .find({"updatetime": {$lt: date}})
+                        .find({"updatetime": {$gt: date}})
+                        .limit(count)
                         .toArray(async (err, items) => {
                         if (err) {
                             reject(err);

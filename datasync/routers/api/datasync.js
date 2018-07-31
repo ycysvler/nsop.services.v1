@@ -23,6 +23,21 @@ module.exports = function(router){
         }
     });
 
+    router.get('/newdatas', async(ctx)=>{
+        let dsLogic = new DataSyncLogic();
+        let ok = tools.required(ctx, ['docname','date','count']);
+        if (ok) {
+            let docname = ctx.request.query['docname'];
+            let date = ctx.request.query['date'];
+            let count = parseInt(ctx.request.query['count']);
+
+            date = new Date();
+            date.setDate(3);
+            let item = await dsLogic.getBaseDocNewData(docname,date,count);
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
 
     /*
     * 远端 > 本地，同步数据

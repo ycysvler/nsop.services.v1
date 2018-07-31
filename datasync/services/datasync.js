@@ -32,10 +32,9 @@ async function ttt(){
     let cNode =await clogic.single();
     if(cNode){
         // 找本地最新时间
-        let date = await dslogic.getBaseDocLastDate('vehicles');
-        console.log('date',date);
+        let date = await dslogic.getBaseDocLastDate('vehicles'); 
         // 拉取100条
-        let result = await requestNewDatas(cNode.parentip, 'vehicles', date, 10); 
+        let result = await requestNewDatas(cNode.parentip, 'vehicles', moment(date).valueOf(), 10); 
         // 写本地库
         let result1 = await dslogic.addBaseDocNewData('vehicles', result.data);
         //console.log(result1);

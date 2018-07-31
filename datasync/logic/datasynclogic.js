@@ -49,6 +49,13 @@ module.exports = class DataSyncLogic {
         });
     }
 
+    /*
+    * 获取指定表某时间之后的N条数据
+    * @query  {string} docname 文档名称
+    * @query  {date}   date    时间
+    * @query  {int}    count   条数
+    * @result {array}          查询到的数据
+    * */
     getBaseDocNewData(docname, date,count) {
         let self = this;
         return new Promise(async (resolve, reject) => {
@@ -215,4 +222,6 @@ module.exports = class DataSyncLogic {
             }
         });
     }
+
+
 };

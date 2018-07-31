@@ -30,10 +30,9 @@ module.exports = function(router){
             let docname = ctx.request.query['docname'];
             let date = ctx.request.query['date'];
             let count = parseInt(ctx.request.query['count']);
+ 
+            date = new Date(Number(date)); 
 
-            console.log('date',date);
-            date = new Date(Number(date));
-            console.log('date',date);
             let item = await dsLogic.getBaseDocNewData(docname,date,count);
             ctx.body = {code: 200, data: item};
         }

@@ -37,7 +37,7 @@ async function ttt(){
         let result = await requestNewDatas(cNode.parentip, 'vehicles', moment(date).valueOf(), 10); 
         // 写本地库
         let result1 = await dslogic.addBaseDocNewData('vehicles', result.data);
-        //console.log(result1);
+        console.log(result1);
     }
 }
 
@@ -49,9 +49,7 @@ async function requestNewDatas(ip,docname, date, count){
         headers: {
             "content-type": "application/json",
         }
-    };
-
-    console.log('url', options.url);
+    }; 
 
     return new Promise((resolve, reject) => {
         try {

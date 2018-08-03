@@ -43,7 +43,6 @@ module.exports = function(router){
     router.get('/source/:id', async(ctx)=>{
         let ok = tools.required(ctx, ['id']);
         if (ok) {
-            //let id = ctx.request.query['id'];
             let id = ctx.params.id;
             let item = await sourceLogic.single(id);
             ctx.body = {code: 200, data: item};
@@ -60,6 +59,21 @@ module.exports = function(router){
         if (ok) {
             let body = ctx.request.body;
             let item = await sourceLogic.create(body);
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
+    /*
+    * 管理系统 > 中心, 新增源码版本数据
+    * @query  {object} body    源码数据
+    * @return {object}         操作结果
+    * */
+    router.post('/source/:id/services', async(ctx)=>{
+        let ok = tools.required(ctx, ['id']);
+        if (ok) {
+            let id = ctx.params.id;
+            let body = ctx.request.body;
+            let item = await sourceLogic.updateservices(id,body);
             ctx.body = {code: 200, data: item};
         }
     });

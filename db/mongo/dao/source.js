@@ -33,7 +33,7 @@ module.exports = class SourceLogic {
     list(){
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Source;
-            doc.findOne({}, function (err, Item) {
+            doc.find().sort({type:1, version:1}).exec(function (err, Item) {
                 if (err) {
                     reject(err);
                 } else {
@@ -73,8 +73,26 @@ module.exports = class SourceLogic {
         });
     }
 
-    updatesourcepath(id, sourcepath) {
+    updateservices(id, services){
         console.log('id', id);
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Source;
+            doc.findOneAndUpdate(
+                {_id: id},
+                {services: services, updatetime: new moment()},
+                function (err, Item) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        Item.services = services;
+                        resolve(Item);
+                    }
+                });
+        });
+    }
+
+    updatesourcepath(id, sourcepath) {
+
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Source;
             doc.findOneAndUpdate(

@@ -27,6 +27,19 @@ module.exports = function(router){
     * @query  {string} id      数据ID
     * @return {object}         单条数据
     * */
+    router.get('/source', async(ctx)=>{
+        let ok = true;
+        if (ok) {
+            let item = await sourceLogic.list();
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
+    /*
+    * any > 中心，获取源码详情
+    * @query  {string} id      数据ID
+    * @return {object}         单条数据
+    * */
     router.get('/source/:id', async(ctx)=>{
         let ok = tools.required(ctx, ['id']);
         if (ok) {

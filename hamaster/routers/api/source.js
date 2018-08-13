@@ -37,6 +37,14 @@ module.exports = function(router){
         }
     });
 
+    router.get('/source', async(ctx)=>{
+        let ok = true;
+        if (ok) { 
+            let item = await sourceLogic.list();
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
     /*
     * 管理系统 > 中心, 新增源码版本数据
     * @query  {object} body    源码数据

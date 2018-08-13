@@ -47,6 +47,19 @@ module.exports = class SourceLogic {
         });
     }
 
+    list() {
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Source;
+            doc.find({}, function (err, Items) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Items);
+                }
+            });
+        });
+    }
+
     remove(id){
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Source;
@@ -59,6 +72,7 @@ module.exports = class SourceLogic {
             });
         });
     }
+
 
     updatesourcepath(id, sourcepath) {
         console.log('id', id);

@@ -60,19 +60,6 @@ module.exports = class SourceLogic {
         });
     }
 
-    list() {
-        return new Promise((resolve, reject) => {
-            let doc = getMongoPool().Source;
-            doc.find({}, function (err, Items) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(Items);
-                }
-            });
-        });
-    }
-
     removeByIds(ids){
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Source;

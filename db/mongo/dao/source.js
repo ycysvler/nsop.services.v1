@@ -89,6 +89,24 @@ module.exports = class SourceLogic {
                 });
         });
     }
+
+    updatesourceinfo(id, info){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Source;
+
+            info.updatetime = new moment();
+            doc.findOneAndUpdate(
+                {_id: id},
+                info,
+                function (err, Item) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(Item);
+                    }
+                });
+        });
+    }
  
 
     updatesourcepath(id, sourcepath) {

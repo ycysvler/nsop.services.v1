@@ -55,6 +55,16 @@ module.exports = function(router){
         }
     });
 
+    router.put('/source/:id', async(ctx)=>{
+        let ok = tools.required(ctx, ['id']);
+        if (ok) {
+            let id = ctx.params.id;
+            let body = ctx.request.body;
+            let item = await sourceLogic.updatesourceinfo(id, body);
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
     router.delete('/source', async(ctx)=>{
         let items = await sourceLogic.removeByIds(ctx.request.body);
         ctx.body = {code: 200, data: items};

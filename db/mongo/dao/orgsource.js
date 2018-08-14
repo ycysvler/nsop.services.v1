@@ -79,4 +79,17 @@ module.exports = class OrgSourceLogic {
             });
         });
     }
+
+    list(){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().OrgSource;
+            doc.find({}, function (err, Item) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Item);
+                }
+            });
+        });
+    }
 };

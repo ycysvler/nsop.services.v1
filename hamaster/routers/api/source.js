@@ -8,6 +8,7 @@ const fs = require('fs');
 const tools = require('../../../utils/tools');
 const uploadFile = require('../../../utils/upload');
 const SourceLogic = require('../../../db/mongo/dao/source');
+const OrgSourceLogic = require('../../../db/mongo/dao/orgsource');
 const HaMasterLogic = require('../../logic/hamasterlogic');
 const sourceLogic = new SourceLogic();
 const haLogic = new HaMasterLogic();
@@ -19,9 +20,19 @@ module.exports = function(router){
     * @return {object}         单条数据
     * */
     router.get('/source', async(ctx)=>{
+        let sourceLogic = new SourceLogic();
         let ok = true;
         if (ok) {
             let item = await sourceLogic.list();
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
+    router.get('/orgsource', async(ctx)=>{
+        let orgsourceLogic = new OrgSourceLogic();
+        let ok = true;
+        if (ok) {
+            let item = await orgsourceLogic.list();
             ctx.body = {code: 200, data: item};
         }
     });
@@ -39,15 +50,6 @@ module.exports = function(router){
             ctx.body = {code: 200, data: item};
         }
     });
-
-    router.get('/source', async(ctx)=>{
-        let ok = true;
-        if (ok) { 
-            let item = await sourceLogic.list();
-            ctx.body = {code: 200, data: item};
-        }
-    });
-
     /*
     * 管理系统 > 中心, 新增源码版本数据
     * @query  {object} body    源码数据

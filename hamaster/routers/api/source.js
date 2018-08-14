@@ -59,6 +59,15 @@ module.exports = function(router){
         }
     });
 
+    router.post('/source/:id/services', async(ctx)=>{
+        let ok = tools.required(ctx, ['id']);
+        if (ok) {
+            let id = ctx.params.id;
+            let body = ctx.request.body;
+            let item = await sourceLogic.updateservices(id,body);
+            ctx.body = {code: 200, data: item};
+        }
+    });
     /*
     * 管理系统 > 中心, 上传压缩包
     * @query  {object} body    源码数据

@@ -73,6 +73,22 @@ module.exports = class SourceLogic {
         });
     }
 
+    updateservices(id, services){ 
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Source;
+            doc.findOneAndUpdate(
+                {_id: id},
+                {services: services, updatetime: new moment()},
+                function (err, Item) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        Item.services = services;
+                        resolve(Item);
+                    }
+                });
+        });
+    }
 
     updatesourcepath(id, sourcepath) {
         console.log('id', id);

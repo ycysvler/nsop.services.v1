@@ -20,27 +20,7 @@ module.exports = class HaMasterLogic {
      * @param  {object} data     信息
      * @return {object}          ？？
      */
-    update(data) {
-        return new Promise(async(resolve, reject) => {
-            try {
-                let Doc = getMongoPool().Source;
-                let item = new Doc(data);
-                item.updatetime = new moment();
-
-                item.save(async(err, item) => {
-                    if (!err) {
-                        resolve(item);
-                    } else {
-                        reject(err);
-                    }
-                });
-            } catch (err) {
-                reject(err)
-            }
-        });
-    }
-
-    async update1(id){
+    async update(id){
         let sourceLogic = new SourceLogic();
         let orgsLogic = new OrgSourceLogic();
 

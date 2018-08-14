@@ -13,15 +13,6 @@ const sourceLogic = new SourceLogic();
 const haLogic = new HaMasterLogic();
 
 module.exports = function(router){
-    router.get('/hello', async(ctx)=>{
-        ctx.body = {"name":"hello"};
-    });
-
-    router.get('/views', async(ctx)=>{
-        await ctx.render('index',{title:'ttt'});
-
-    });
-
     /*
     * any > 中心，获取源码详情
     * @query  {string} id      数据ID
@@ -146,12 +137,12 @@ module.exports = function(router){
     * @query  {object} body    源码数据
     * @return {null}
     * */
-    router.get('/update1/:id', async(ctx)=>{
+    router.get('/update/:id', async(ctx)=>{
         let ok = tools.required(ctx, ['id']);
         //
         if (ok) {
             let id = ctx.params.id;
-            let item = await haLogic.update1(id);
+            let item = await haLogic.update(id);
             ctx.body = {code: 200, data: item};
         }
     });

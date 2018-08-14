@@ -30,6 +30,19 @@ module.exports = class SourceLogic {
         });
     }
 
+    list(){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Source;
+            doc.find().sort({type:1, version:1}).exec(function (err, Item) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Item);
+                }
+            });
+        });
+    }
+
     /**
      * 获取单条数据
      * @return {array}  程序包信息
@@ -72,7 +85,7 @@ module.exports = class SourceLogic {
             });
         });
     }
-
+ 
     updateservices(id, services){ 
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Source;
@@ -89,9 +102,10 @@ module.exports = class SourceLogic {
                 });
         });
     }
+ 
 
     updatesourcepath(id, sourcepath) {
-        console.log('id', id);
+
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Source;
             doc.findOneAndUpdate(

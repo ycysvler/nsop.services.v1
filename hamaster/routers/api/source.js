@@ -27,10 +27,22 @@ module.exports = function(router){
     * @query  {string} id      数据ID
     * @return {object}         单条数据
     * */
+    router.get('/source', async(ctx)=>{
+        let ok = true;
+        if (ok) {
+            let item = await sourceLogic.list();
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
+    /*
+    * any > 中心，获取源码详情
+    * @query  {string} id      数据ID
+    * @return {object}         单条数据
+    * */
     router.get('/source/:id', async(ctx)=>{
         let ok = tools.required(ctx, ['id']);
         if (ok) {
-            //let id = ctx.request.query['id'];
             let id = ctx.params.id;
             let item = await sourceLogic.single(id);
             ctx.body = {code: 200, data: item};
@@ -68,6 +80,21 @@ module.exports = function(router){
             ctx.body = {code: 200, data: item};
         }
     });
+    /*
+    * 管理系统 > 中心, 新增源码版本数据
+    * @query  {object} body    源码数据
+    * @return {object}         操作结果
+    * */
+    router.post('/source/:id/services', async(ctx)=>{
+        let ok = tools.required(ctx, ['id']);
+        if (ok) {
+            let id = ctx.params.id;
+            let body = ctx.request.body;
+            let item = await sourceLogic.updateservices(id,body);
+            ctx.body = {code: 200, data: item};
+        }
+    });
+
     /*
     * 管理系统 > 中心, 上传压缩包
     * @query  {object} body    源码数据

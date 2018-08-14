@@ -11,7 +11,8 @@ const download = require('../../utils/download');
 const uzip = require('../../utils/uzip');
 const SourceLogic = require('../../db/mongo/dao/source');
 const OrgSourceLogic = require('../../db/mongo/dao/orgsource');
-
+const CurrentLogic = require('../../db/mongo/dao/current');
+const DataSyncLogic = require('../../datasync/logic/datasynclogic');
 
 module.exports = class HaMasterLogic {
     /**
@@ -102,7 +103,11 @@ module.exports = class HaMasterLogic {
         }
         await orgsLogic.update(orgsource._id, newdata);
         // 同步 orgsource 到 中心
-        return "hello";
+        let current = await new CurrentLogic().single();
+        let dSyncLogic = new DataSyncLogic();
+        let result = await dSyncLogic.sendBaseDocDatas(current.orgid,'organizations', orgsource._id);
+
+        return result;
 
     }
 

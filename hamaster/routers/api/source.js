@@ -28,15 +28,6 @@ module.exports = function(router){
         }
     });
 
-    router.get('/orgsource', async(ctx)=>{
-        let orgsourceLogic = new OrgSourceLogic();
-        let ok = true;
-        if (ok) {
-            let item = await orgsourceLogic.list();
-            ctx.body = {code: 200, data: item};
-        }
-    });
-
     /*
     * any > 中心，获取源码详情
     * @query  {string} id      数据ID
@@ -64,15 +55,12 @@ module.exports = function(router){
         }
     });
 
-    router.post('/source/:id/services', async(ctx)=>{
-        let ok = tools.required(ctx, ['id']);
-        if (ok) {
-            let id = ctx.params.id;
-            let body = ctx.request.body;
-            let item = await sourceLogic.updateservices(id,body);
-            ctx.body = {code: 200, data: item};
-        }
+    router.delete('/source', async(ctx)=>{
+        let items = await sourceLogic.removeByIds(ctx.request.body);
+        ctx.body = {code: 200, data: items};
+
     });
+
     /*
     * 管理系统 > 中心, 新增源码版本数据
     * @query  {object} body    源码数据
@@ -148,4 +136,6 @@ module.exports = function(router){
             ctx.body = {code: 200, data: item};
         }
     });
+
+
 };

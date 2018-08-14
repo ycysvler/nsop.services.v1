@@ -88,6 +88,8 @@ module.exports = class HaMasterLogic {
                 console.log('start', cmd);
                 await tools.pm2(cmd.start);
             }
+            // update complete
+            state = 1;
 
         }else{
             state = -1;     // 下载失败

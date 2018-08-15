@@ -1,5 +1,6 @@
 const moment = require('moment');
 const request = require('request');
+const Config = require('../../config/config');
 const VehicleLogic = require('../../db/mongo/dao/vehicle');
 const DataSyncLogic = require('../logic/datasynclogic');
 const CurrentLogic = require('../../db/mongo/dao/current');
@@ -25,7 +26,11 @@ async function run() {
 
 //run();
 
-async function ttt(){
+/*
+* 车型信息同步
+* 客户端从服务器拉取
+* */
+async function vehicleSync(){
     let dslogic = new DataSyncLogic();
     let clogic = new CurrentLogic();
     // 找中央节点
@@ -44,7 +49,7 @@ async function ttt(){
 async function requestNewDatas(ip,docname, date, count){
     let options = {
         method: 'get',
-        url: `http://${ip}:4998/nsop/datasync/api/newdatas?docname=${docname}&date=${date}&count=${count}`,
+        url: `http://${ip}:${Config.server.datasync.port}/nsop/datasync/api/newdatas?docname=${docname}&date=${date}&count=${count}`,
         json: true,
         headers: {
             "content-type": "application/json",
@@ -66,4 +71,4 @@ async function requestNewDatas(ip,docname, date, count){
     });
 }
 
-ttt();
+vehicleSync();

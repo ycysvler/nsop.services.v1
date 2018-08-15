@@ -27,29 +27,33 @@ module.exports = {
     redis: {
         host: '127.0.0.1',
         port: 6379,
-        password:'123456'
+        password: '123456'
     },
 
     // server 相关配置
-    server:{
-        model:{
+    server: {
+        model: {
             port: 4001                          // 服务启动端口号
         },
-        hamaster:{
+        web:{
+            port: 4010                          // 服务启动端口号
+        },
+        hamaster: {
             port: 4999                          // 服务启动端口号
         },
-        datasync:{
+        datasync: {
             port: 4998                          // 服务启动端口号
+        },
+        datamanager: {
+            port: 4997                          // 服务启动端口号
         }
     },
 
     // 父级中心节点地址
-    parent:{
-        host:'10.211.55.7'
+    parent: {
+        host: '10.211.55.7'
     },
 
     // 当前节点
-    current:{
-
-    }
+    current: {}
 };

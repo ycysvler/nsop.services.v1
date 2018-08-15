@@ -28,5 +28,27 @@ module.exports = class VehicleLogic {
                 reject(err)
             }
         });
-    } 
+    }
+
+    list(platenumber, pageSize, pageIndex){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Vehicle;
+
+            let re = new RegExp(platenumber);
+            doc.where({'platenumber':re}).count((err, count)=>{
+                doc.where({'platenumber':re}).skip((pageIndex - 1) * pageSize).limit(pageSize).exec(function (err, Items) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve({
+                            pagination: {total: count},
+                            items:Items
+                        });
+                    }
+                });
+
+            });
+
+        });
+    }
 };

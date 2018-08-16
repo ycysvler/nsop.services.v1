@@ -74,6 +74,22 @@ module.exports = class Schemas {
             updatetime: {type: Date, index: true}               // 更新时间
         });
         this.Vehicle = conn.model('Vehicle', this.vehicleSchema);
+
+        // 源码表
+        this.monitorSchema = new mongoose.Schema({
+            orgid: {type: String},                              // 节点ID
+            type: {type: String},                               // 服务类型
+            updatetime: {type: Date}                            // 更新时间
+        });
+        this.Monitor = conn.model('Monitor', this.monitorSchema);
+
+        this.dialingSchema = new mongoose.Schema({
+            orgid: {type: String},                              // 节点ID
+            type: {type: String},                               // 服务类型
+            port:{type:Number}                                  // 端口号
+        });
+        this.Dialing = conn.model('Dialing', this.dialingSchema);
+
     }
 };
 

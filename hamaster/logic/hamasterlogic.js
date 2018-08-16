@@ -10,6 +10,7 @@ const config = require('../../config/config');
 const download = require('../../utils/download');
 const uzip = require('../../utils/uzip');
 const SourceLogic = require('../../db/mongo/dao/source');
+const MonitorLogic = require('../../db/mongo/dao/monitor');
 const OrgSourceLogic = require('../../db/mongo/dao/orgsource');
 const CurrentLogic = require('../../db/mongo/dao/current');
 const DataSyncLogic = require('../../datasync/logic/datasynclogic');
@@ -136,5 +137,17 @@ module.exports = class HaMasterLogic {
                 reject(err)
             }
         });
+    }
+
+    async heartbeat(orgid, type, body){
+        let logic = new MonitorLogic();
+
+        let item = await logic.single(body.orgid, body.type);
+
+        if(item){
+            return await logic.update(body.orgid, body.type, body);
+        }else{
+            return await logic.create(body);
+        }
     }
 };

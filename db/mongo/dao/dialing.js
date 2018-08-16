@@ -4,7 +4,7 @@
 const moment = require('moment');
 const getMongoPool = require('../pool.js');
 
-module.exports = class MonitorLogic {
+module.exports = class DialingLogic {
     /**
      * 创建
      * @param  {object} data     信息
@@ -13,8 +13,9 @@ module.exports = class MonitorLogic {
     create(data) {
         return new Promise(async (resolve, reject) => {
             try {
-                let Doc = getMongoPool().Monitor;
+                let Doc = getMongoPool().Dialing;
                 let item = new Doc(data);
+                item.updatetime = new moment();
                 item.save(async (err, item) => {
                     if (!err) {
                         resolve(item);
@@ -30,7 +31,7 @@ module.exports = class MonitorLogic {
 
     single(orgid, type) {
         return new Promise((resolve, reject) => {
-            let doc = getMongoPool().Monitor;
+            let doc = getMongoPool().Dialing;
             doc.findOne({'orgid': orgid, 'type':type},  function (err, Item) {
                 if (err) {
                     reject(err);
@@ -39,28 +40,11 @@ module.exports = class MonitorLogic {
                 }
             });
         });
-    }
-
-    update(orgid, type, info){
-        return new Promise((resolve, reject) => {
-            let doc = getMongoPool().Monitor;
-
-            doc.findOneAndUpdate(
-                {orgid: orgid, type:type},
-                info,
-                function (err, Item) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(Item);
-                    }
-                });
-        });
-    }
+    } 
 
     list(){
         return new Promise((resolve, reject) => {
-            let doc = getMongoPool().Monitor;
+            let doc = getMongoPool().Dialing;
             doc.find().sort({orgid:1, type:1}).exec(function (err, Item) {
                 if (err) {
                     reject(err);

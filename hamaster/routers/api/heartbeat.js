@@ -4,7 +4,7 @@
  * Created by VLER on 2018/7/18.
  */
 const moment = require('moment');
-const MonitorLogic = require('../../../db/mongo/dao/monitor');
+const HaMasterLogic = require('../../logic/hamasterlogic');
 
 module.exports = function (router) {
     router.get('/heartbeat', async (ctx) => {
@@ -12,15 +12,12 @@ module.exports = function (router) {
     });
 
     router.post('/heartbeat', async(ctx)=>{
-        let logic = new MonitorLogic();
+        let logic = new HaMasterLogic();
         let body = ctx.request.body;
+        body.updatetime = moment();
 
-        let item = await logic.single(body.orgid, body.type);
+        let item = await logic.heartbeat(body.orgid, body.type, body);
 
-        if(item){
-            logic.update(body.orgid, body.type, body);
-        }else{
-            logic.create(body);
-        }
+        ctx.body = {code:200, data:item};
     });
 };

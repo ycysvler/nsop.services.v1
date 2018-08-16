@@ -66,7 +66,7 @@ async function run(){
         }
     }
 
-    setTimeout(run, 10000);
+    setTimeout(run, 60000);
 }
 
 initOrgMap();

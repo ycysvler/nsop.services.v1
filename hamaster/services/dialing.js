@@ -19,10 +19,10 @@ async function initOrgMap(){
     }
 }
 
-async function dialing(host, port){
+async function dialing(host, port, path){
     let options = {
         method: 'get',
-        url: `http://${host}:${port}/nsop/hamaster/api/heartbeat`,
+        url: `http://${host}:${port}${path}`,
         json: true,
         headers: {
             "content-type": "application/json",
@@ -55,8 +55,9 @@ async function run(){
             let host = org.host;
             let port = item.port;
             let type = item.type;
+            let path = item.path;
 
-            let result = await dialing(host, port);
+            let result = await dialing(host, port, path);
 
             if(result !== 'Not Found'){
                 hlogic.heartbeat(item.orgid, type, {

@@ -1,9 +1,14 @@
 const moment = require('moment');
 const request = require('request');
 const config = require('../../config/config');
+const HeartBeat = require('../../utils/heartbeat');
 const DialingLogic = require('../../db/mongo/dao/dialing');
 const OrganizationLogic = require('../../db/mongo/dao/organization');
 const HaMasterLogic = require('../logic/hamasterlogic');
+
+let heartBeat = new HeartBeat(60000, 'dialing');
+heartBeat.run();
+
 let orgMap = {};
 
 async function initOrgMap(){

@@ -6,8 +6,8 @@ const DialingLogic = require('../../db/mongo/dao/dialing');
 const OrganizationLogic = require('../../db/mongo/dao/organization');
 const HaMasterLogic = require('../logic/hamasterlogic');
 
-let heartBeat = new HeartBeat(60000, 'dialing');
-heartBeat.run();
+// let heartBeat = new HeartBeat(60000, 'dialing');
+// heartBeat.run();
 
 let orgMap = {};
 

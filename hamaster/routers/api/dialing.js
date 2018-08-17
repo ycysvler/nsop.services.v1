@@ -20,4 +20,11 @@ module.exports = function (router) {
         let item = await logic.create(body);
         ctx.body = {code: 200, data: item};
     });
+
+    router.delete('/dialing', async(ctx)=>{
+        let logic = new DialingLogic();
+        let body = ctx.request.body;
+        let item = await logic.removeByIds(body);
+        ctx.body = {code: 200, data: item};
+    });
 };

@@ -8,7 +8,7 @@
     "server": "nodemon server/app.js",
     "model": "nodemon model/routers/server.js",
     "hamaster": "nodemon hamaster/server.js",
-    "datamanager": "nodemon datamanager/server.js",
+    "basedata": "nodemon basedata/server.js",
     "datasync": "nodemon datasync/server.js"
   },
   "keywords": [],

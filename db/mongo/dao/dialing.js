@@ -40,12 +40,25 @@ module.exports = class DialingLogic {
                 }
             });
         });
-    } 
+    }
 
     list(){
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Dialing;
-            doc.find().sort({orgid:1, type:1}).exec(function (err, Item) {
+            doc.find().sort({orgid:1, port:1}).exec(function (err, Item) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Item);
+                }
+            });
+        });
+    }
+
+    removeByIds(ids){
+        return new Promise((resolve, reject) => {
+            let doc = getMongoPool().Dialing;
+            doc.deleteMany({_id:{$in:ids}}, function (err, Item) {
                 if (err) {
                     reject(err);
                 } else {

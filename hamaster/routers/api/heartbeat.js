@@ -8,7 +8,10 @@ const HaMasterLogic = require('../../logic/hamasterlogic');
 
 module.exports = function (router) {
     router.get('/heartbeat', async (ctx) => {
-        ctx.body = {code: 200, date: new moment()};
+        ctx.body = {
+            code: 200,
+            date: moment().format("YYYY-MM-DD hh:mm:ss")
+        };
     });
 
     router.post('/heartbeat', async(ctx)=>{

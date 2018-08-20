@@ -10,7 +10,7 @@ from flask import Flask,request ,Response
 # 下面是Http处理部分
 app = Flask(__name__)
 
-@app.route('/hreartbeat')
+@app.route('/heartbeat')
 def heartbeat():
     return Response(json.dumps({"code":200,"data":time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))}),mimetype='application/json')
 

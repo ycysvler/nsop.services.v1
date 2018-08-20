@@ -46,6 +46,9 @@ module.exports = {
         },
         datamanager: {
             port: 4997                          // 服务启动端口号
+        },
+        vehicle: {
+            port: 4996                          // 服务启动端口号
         }
     },
 

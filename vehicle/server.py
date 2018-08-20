@@ -10,11 +10,11 @@ from flask import Flask,request ,Response
 # 下面是Http处理部分
 app = Flask(__name__)
 
-@app.route('/heartbeat')
+@app.route('/vehicle/heartbeat')
 def heartbeat():
     return Response(json.dumps({"code":200,"data":time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))}),mimetype='application/json')
 
-@app.route('/caculator')
+@app.route('/vehicle/caculator')
 def caculator():
     # 声明特征返回值
     result = None

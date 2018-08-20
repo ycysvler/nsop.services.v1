@@ -4,7 +4,6 @@ import os
 import time
 import json
 import urllib
-import heartbeat
 
 from flask import Flask,request ,Response
 

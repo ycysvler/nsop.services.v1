@@ -17,7 +17,7 @@ const logger = require('../utils/logger');                  // 引用日志组�
 const loader = require('../utils/loader');                  // 路由加载器
 
 const app = new Koa();                                      // 创建koa实例化
-const log = logger('datamanager.api');                      // 日志
+const log = logger('basedata.api');                         // 日志
 
 app.on('error', (err, ctx) => {                             // 全局错误处理
     console.log(err);
@@ -30,16 +30,16 @@ app.use(koastatic(path.join(__dirname, './public')));       // 处理静态资�
 app.use(bodyparser());                                      // 使用ctx.body解析中间件
 app.use(consuming);                                         // 计算耗时中间件
 
-const root = loader(path.join(__dirname, './routers/api'), '/nsop/data/api');
+const root = loader(path.join(__dirname, './routers/api'), '/nsop/basedata/api');
 app.use(root.routes()).use(root.allowedMethods());          // 加载路由
 
-app.listen(config.server.datamanager.port);                 // 启动http服务
+app.listen(config.server.basedata.port);                 // 启动http服务
 
 log.info({                                                  // 记录系统启动日志
     path: '~',
     type: 'start',
-    port: config.server.datamanager.port
-}, 'data manager v1.0 app services is starting at port ' + config.server.datamanager.port);
+    port: config.server.basedata.port
+}, 'data manager v1.0 app services is starting at port ' + config.server.basedata.port);
 
 
 module.exports = app;

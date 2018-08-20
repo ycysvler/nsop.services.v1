@@ -44,7 +44,7 @@ module.exports = {
         datasync: {
             port: 4998                          // 服务启动端口号
         },
-        datamanager: {
+        basedata: {
             port: 4997                          // 服务启动端口号
         },
         vehicle: {

@@ -48,7 +48,7 @@ async function run(){
     let dlogic = new DialingLogic();
     let hlogic = new HaMasterLogic();
     let items = await dlogic.list();
-
+    console.log('orgs', items);
     for(let item of items){
         let org = orgMap['orgid.' + item.orgid];
         if(org){

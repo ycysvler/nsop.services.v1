@@ -55,8 +55,6 @@ module.exports = class HaMasterLogic {
         // 下载 zip
         let zippath = await this.downloadZip(source);
 
-        console.log('zippath', zippath);
-
         if(fs.existsSync(zippath)){
             // 停 pm2
             for(let cmd of source.services){
@@ -93,7 +91,8 @@ module.exports = class HaMasterLogic {
     }
 
     async downloadZip(source){
-        let zipurl = `http://${config.parent.host}:${config.server.hamaster.port}${source.sourcepath}`;
+        let current = await new CurrentLogic().single();
+        let zipurl = `http://${current.host}:${config.server.hamaster.port}${source.sourcepath}`;
         // 压缩包文件名
         let filename = path.basename(source.sourcepath);
         // 临时存放目录
@@ -105,8 +104,7 @@ module.exports = class HaMasterLogic {
         // 下载
         await download(zipurl, fullpath);
 
-        return fullpath;//source.targetpath + filename;
-
+        return fullpath;
     }
 
     /**
@@ -115,9 +113,10 @@ module.exports = class HaMasterLogic {
      * @return {object}        source数据
      */
     async getSourceById(id){
+        let current = await new CurrentLogic().single();
         let options = {
             method: 'get',
-            url: `http://${config.parent.host}:${config.server.hamaster.port}/nsop/hamaster/api/source/${id}`,
+            url: `http://${current.host}:${config.server.hamaster.port}/nsop/hamaster/api/source/${id}`,
             json: true,
             headers: {
                 "content-type": "application/json",

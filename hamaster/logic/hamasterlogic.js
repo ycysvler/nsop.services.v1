@@ -33,6 +33,7 @@ module.exports = class HaMasterLogic {
         if(!source){
             // 如果不存在，去服务器端获取
             source = await this.getSourceById(id);
+            console.log('getsoure from server', source);
             // 写入本地版本库
             source = await sourceLogic.create(source.data);
         }

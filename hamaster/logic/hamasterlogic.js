@@ -97,8 +97,13 @@ module.exports = class HaMasterLogic {
         // 压缩包文件名
         let filename = path.basename(source.sourcepath);
         // 临时存放目录
-        let temppath = path.join(__dirname, `../public/sources/${source.type}/${source.version}/`);
-
+        let temppath = path.join(__dirname, `../public/`);
+        await tools.mkdir(temppath);
+        temppath = path.join(__dirname, `../public/sources/`);
+        await tools.mkdir(temppath);
+        temppath = path.join(__dirname, `../public/sources/${source.type}/`);
+        await tools.mkdir(temppath);
+        temppath = path.join(__dirname, `../public/sources/${source.type}/${source.version}/`);
         await tools.mkdir(temppath);
         // 全路径
         let fullpath = `${temppath}${filename}`;

@@ -194,13 +194,18 @@ module.exports = class DataSyncLogic {
     async sendBaseDocDatas(orgid, docname, ids){
         let orgLogic = new OrganizationLogic();
         let orgItem = await orgLogic.single(orgid);
+
+        return this.sendBaseDocDatasByIp(orgItem.host, docname, ids);
+    }
+
+    async sendBaseDocDatasByIp(ip, docname, ids){
         let datas = await this.getBaseDocDatas(docname, ids);
 
         let body = {"docname":docname, datas:datas};
 
         let options = {
             method: 'post',
-            url: `http://${orgItem.host}:${config.server.datasync.port}/nsop/datasync/api/async`,
+            url: `http://${ip}:${config.server.datasync.port}/nsop/datasync/api/async`,
             json: true,
             headers: {
                 "content-type": "application/json",

@@ -93,7 +93,7 @@ module.exports = class HaMasterLogic {
         // 同步 orgsource 到 中心
         let current = await new CurrentLogic().single();
         let dSyncLogic = new DataSyncLogic();
-        let result = await dSyncLogic.sendBaseDocDatas(current.parentid, 'orgsources', [orgsource._id]);
+        let result = await dSyncLogic.sendBaseDocDatasByIp(current.parentip, 'orgsources', [orgsource._id]);
 
         return result;
 

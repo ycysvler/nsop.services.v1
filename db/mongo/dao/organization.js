@@ -3,7 +3,7 @@
  */
 const moment = require('moment');
 const getMongoPool = require('../pool.js');
-
+const DialingLogic = require('./dialing');
 module.exports = class OrganizationLogic {
     /**
      * 创建
@@ -19,6 +19,36 @@ module.exports = class OrganizationLogic {
 
                 item.save(async(err, item) => {
                     if (!err) {
+                        let dlogic = new DialingLogic();
+                        // hamaster 心跳
+                        dlogic.create({
+                            "orgid": data.orgid,
+                            "type": "hamaster",
+                            "port": 4999,
+                            "path": "/nsop/hamaster/api/heartbeat"
+                        });
+                        // basedata 心跳
+                        dlogic.create({
+                            "orgid": data.orgid,
+                            "type": "basedata",
+                            "port": 4997,
+                            "path": "/nsop/basedata/api/heartbeat"
+                        });
+                        // datasync 心跳
+                        dlogic.create({
+                            "orgid": data.orgid,
+                            "type": "datasync",
+                            "port": 4998,
+                            "path": "/nsop/datasync/api/heartbeat"
+                        });
+                        // vehicle 心跳
+                        dlogic.create({
+                            "orgid": data.orgid,
+                            "type": "vehicle",
+                            "port": 7777,
+                            "path": "/vehicle/api/heartbeat"
+                        });
+
                         resolve(item);
                     } else {
                         reject(err);
@@ -37,7 +67,7 @@ module.exports = class OrganizationLogic {
     single(id) {
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Organization;
-            doc.findOne({orgid: id},  function (err, Item) {
+            doc.findOne({orgid: id}, function (err, Item) {
                 if (err) {
                     reject(err);
                 } else {
@@ -46,14 +76,15 @@ module.exports = class OrganizationLogic {
             });
         });
     }
+
     /**
      * 获取全部数据
      * @return {array}  收费站信息
      */
-    list(){
+    list() {
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Organization;
-            doc.find({},  function (err, Item) {
+            doc.find({}, function (err, Item) {
                 if (err) {
                     reject(err);
                 } else {
@@ -67,10 +98,10 @@ module.exports = class OrganizationLogic {
      * 获取单条数据
      * @return {array}  收费站信息
      */
-    singleByIp(host){
+    singleByIp(host) {
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Organization;
-            doc.findOne({host: host},  function (err, Item) {
+            doc.findOne({host: host}, function (err, Item) {
                 if (err) {
                     reject(err);
                 } else {
@@ -80,7 +111,7 @@ module.exports = class OrganizationLogic {
         });
     }
 
-    removeByCode(code){
+    removeByCode(code) {
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Organization;
             doc.remove({code: code}, function (err, Item) {
@@ -93,10 +124,10 @@ module.exports = class OrganizationLogic {
         });
     }
 
-    removeByIds(ids){
+    removeByIds(ids) {
         return new Promise((resolve, reject) => {
             let doc = getMongoPool().Organization;
-            doc.deleteMany({_id:{$in:ids}}, function (err, Item) {
+            doc.deleteMany({_id: {$in: ids}}, function (err, Item) {
                 if (err) {
                     reject(err);
                 } else {

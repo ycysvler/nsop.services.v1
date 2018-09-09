@@ -32,9 +32,6 @@ module.exports = {
 
     // server 相关配置
     server: {
-        model: {
-            port: 4001                          // 服务启动端口号
-        },
         web:{
             port: 4010                          // 服务启动端口号
         },
@@ -49,7 +46,10 @@ module.exports = {
         },
         vehicle: {
             port: 4996                          // 服务启动端口号
-        }
+        },
+        model: {
+            port: 4995                          // 服务启动端口号
+        },
     },
 
     // 父级中心节点地址

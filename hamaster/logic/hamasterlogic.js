@@ -59,15 +59,23 @@ module.exports = class HaMasterLogic {
         if(fs.existsSync(zippath)){
             // 停 pm2
             for(let cmd of source.services){
-                console.log('stop', cmd);
-                await tools.pm2(cmd.stop);
+                if(cmd.stop){
+                    // 如果有停的需求，那就停一下
+                    console.log('stop', cmd);
+                    await tools.pm2(cmd.stop);
+                }
+
             }
             // unzip
             await uzip(zippath, source.targetpath);
             // 起 pm2
             for(let cmd of source.services){
-                console.log('start', cmd);
-                await tools.pm2(cmd.start);
+                // 如果有启动的需求，那就启动一下
+                if(cmd.start){
+                    console.log('start', cmd);
+                    await tools.pm2(cmd.start);
+                }
+
             }
             // update complete
             state = 1;

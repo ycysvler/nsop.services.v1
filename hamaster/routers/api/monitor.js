@@ -23,8 +23,8 @@ module.exports = function (router) {
         let result = [];
         for(let item of items){
             let org = orgMap['orgid.' + item.orgid];
-            console.log('org', org);
-            result.push({_id:item._id, orgid: org.orgid, name:org.name, host:org.host, type:item.type, updatetime:item.updatetime});
+            if(org)
+                result.push({_id:item._id, orgid: org.orgid, name:org.name, host:org.host, type:item.type, updatetime:item.updatetime});
         }
 
         ctx.body = {code: 200, data: result};

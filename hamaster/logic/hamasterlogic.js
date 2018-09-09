@@ -24,7 +24,7 @@ module.exports = class HaMasterLogic {
     async update(id){
         let sourceLogic = new SourceLogic();
         let orgsLogic = new OrgSourceLogic();
-
+        let current = await new CurrentLogic().single();
         // 查找版本信息
         await sourceLogic.removeByIds(id);
 
@@ -38,7 +38,7 @@ module.exports = class HaMasterLogic {
             source = await sourceLogic.create(source.data);
         }
 
-        let orgid = tools.getCurrentOrgID();
+        let orgid = current.orgid;
         // 查找 orgsource
         let orgsource = await orgsLogic.single(orgid, source.type);
 
@@ -91,7 +91,7 @@ module.exports = class HaMasterLogic {
         }
         await orgsLogic.update(orgsource._id, newdata);
         // 同步 orgsource 到 中心
-        let current = await new CurrentLogic().single();
+
         let dSyncLogic = new DataSyncLogic();
         let result = await dSyncLogic.sendBaseDocDatasByIp(current.parentip, 'orgsources', [orgsource._id]);
 

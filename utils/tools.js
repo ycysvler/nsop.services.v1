@@ -45,10 +45,6 @@ class tools {
         return new Promise((resolve) => setTimeout(resolve, time));
     }
 
-    getCurrentOrgID(){
-        return "0431.054";
-    }
-
     async mkdir(dirpath){
         let ex = fs.existsSync(dirpath);
         if(!ex){

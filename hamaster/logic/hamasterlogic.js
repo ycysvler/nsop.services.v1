@@ -33,7 +33,7 @@ module.exports = class HaMasterLogic {
         if(!source){
             // 如果不存在，去服务器端获取
             source = await this.getSourceById(id);
-            console.log('getsoure from server', source);
+            console.log('getsoure from server:', source);
             // 写入本地版本库
             source = await sourceLogic.create(source.data);
         }
@@ -93,7 +93,7 @@ module.exports = class HaMasterLogic {
 
     async downloadZip(source){
         let current = await new CurrentLogic().single();
-        let zipurl = `http://${current.host}:${config.server.hamaster.port}${source.sourcepath}`;
+        let zipurl = `http://${current.parentip}:${config.server.hamaster.port}${source.sourcepath}`;
         // 压缩包文件名
         let filename = path.basename(source.sourcepath);
         // 临时存放目录
@@ -117,7 +117,7 @@ module.exports = class HaMasterLogic {
         let current = await new CurrentLogic().single();
         let options = {
             method: 'get',
-            url: `http://${current.host}:${config.server.hamaster.port}/nsop/hamaster/api/source/${id}`,
+            url: `http://${current.parentip}:${config.server.hamaster.port}/nsop/hamaster/api/source/${id}`,
             json: true,
             headers: {
                 "content-type": "application/json",

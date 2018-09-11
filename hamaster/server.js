@@ -18,7 +18,7 @@ const loader = require('../utils/loader');                  // 路由加载器
 const app = new Koa();                                      // 创建koa实例化
 const log = logger('hamaster.api');                         // 日志
 
-const {OrganizationLogic} = require('../db/mongo/dao/organization');
+const OrganizationLogic = require('../db/mongo/dao/organization');
 const orgLogic = new OrganizationLogic();
 orgLogic.init();                                            // 初始化出来组织的根节点
 // app.use(async (ctx, next) => {                           // 打一条屏显，活跃下气氛

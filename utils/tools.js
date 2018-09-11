@@ -7,9 +7,27 @@
 const logger = require('./logger');                             // 引用日志组建
 const log = logger('utils');                                    // 日志
 const fs = require('fs');
+const os = require('os');
 const exec = require('child_process').exec;
 
 class tools {
+    /*
+    * 获取本机IP地址
+    * */
+    getIps(){
+        let IPv4s = [];
+        for(let item of os.networkInterfaces().en0){
+            if(item.family === 'IPv4')
+                IPv4s.push(item.address);
+        }
+        console.log('ipv4s', IPv4s);
+
+        if(IPv4s.length > 0)
+            return IPv4s[0];
+        else
+            return '';
+    }
+
     /**
      * 检查必填参数
      * @param  {object} ctx     上下文

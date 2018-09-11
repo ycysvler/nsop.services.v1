@@ -3,8 +3,28 @@
  */
 const moment = require('moment');
 const getMongoPool = require('../pool.js');
+const tools = require('../../../utils/tools');
 const DialingLogic = require('./dialing');
 module.exports = class OrganizationLogic {
+
+    /*
+    * 初始化基础数据
+    * */
+    async init(){
+        let root = this.single('root');
+        if(!root){
+            let Doc = getMongoPool().Organization;
+            let item = new Doc({
+                orgid:'root',
+                code:'root',
+                type:0,
+                name:'root',
+                parentid:'0',
+                host:tools.getIps(),
+                updatetime:moment()
+            });
+        }
+    }
     /**
      * 创建
      * @param  {object} data     信息

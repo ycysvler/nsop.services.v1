@@ -11,7 +11,7 @@ module.exports = class OrganizationLogic {
     * 初始化基础数据
     * */
     async init(){
-        let root = this.single('root');
+        let root = await this.single('root');
         if(!root){
             console.log("root org: undefine");
 

@@ -16,7 +16,8 @@ class tools {
     * */
     getIps(){
         let IPv4s = [];
-        for(let item of os.networkInterfaces().en0){
+        let en0 = os.networkInterfaces().en0 ? os.networkInterfaces().en0:os.networkInterfaces().eth0;
+        for(let item of en0){
             if(item.family === 'IPv4')
                 IPv4s.push(item.address);
         }

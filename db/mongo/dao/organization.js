@@ -11,8 +11,10 @@ module.exports = class OrganizationLogic {
     * 初始化基础数据
     * */
     async init(){
-        let root = this.single('root');
+        let root = await this.single('root');
         if(!root){
+            console.log("root org: undefine");
+
             let Doc = getMongoPool().Organization;
             let item = new Doc({
                 orgid:'root',
@@ -23,6 +25,16 @@ module.exports = class OrganizationLogic {
                 host:tools.getIps(),
                 updatetime:moment()
             });
+
+            item.save((err, item)=>{
+                if(err){
+                    console.log("add root org err :", err);
+                }else{
+                    console.log("add root org success:", item);
+                }
+            });
+        }else{
+            console.log("root org:", root);
         }
     }
     /**

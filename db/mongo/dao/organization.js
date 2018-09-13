@@ -65,7 +65,7 @@ module.exports = class OrganizationLogic {
                         dlogic.create({
                             "orgid": data.orgid,
                             "type": "vehicle",
-                            "port": 7777,
+                            "port": 4000,
                             "path": "/vehicle/api/heartbeat"
                         });
 

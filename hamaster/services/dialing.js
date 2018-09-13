@@ -50,26 +50,32 @@ async function run(){
     let items = await dlogic.list();
     console.log('orgs', items);
     for(let item of items){
-        let org = orgMap['orgid.' + item.orgid];
-        if(org){
-            let host = org.host;
-            let port = item.port;
-            let type = item.type;
-            let path = item.path;
+        try {
+            let org = orgMap['orgid.' + item.orgid];
+            if(org){
+                let host = org.host;
+                let port = item.port;
+                let type = item.type;
+                let path = item.path;
 
-            let result = await dialing(host, port, path);
+                let result = await dialing(host, port, path);
 
-            if(result !== 'Not Found'){
-                hlogic.heartbeat(item.orgid, type, {
-                    type:type,orgid:item.orgid, updatetime: moment()
-                });
-            }else{
-                hlogic.heartbeat(item.orgid, type, {
-                    type:type,orgid:item.orgid, updatetime:moment("2000-01-01","YYYY-MM-DD")
-                });
+                if(result !== 'Not Found'){
+                    hlogic.heartbeat(item.orgid, type, {
+                        type:type,orgid:item.orgid, updatetime: moment()
+                    });
+                }else{
+                    hlogic.heartbeat(item.orgid, type, {
+                        type:type,orgid:item.orgid, updatetime:moment("2000-01-01","YYYY-MM-DD")
+                    });
+                }
+                console.log(type, host, port, result.code, result.date);
             }
-            console.log(type, host, port, result.code, result.date);
+        } catch(e) {
+            console.log('\r\n', e, '\r\n', e.stack);
         }
+
+
     }
 
     setTimeout(run, 60000);

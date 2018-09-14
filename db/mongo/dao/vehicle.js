@@ -16,6 +16,7 @@ module.exports = class VehicleLogic {
                 let Doc = getMongoPool().Vehicle;
                 let item = new Doc(data);
                 item.updatetime = new moment();
+                item.state = 0;
 
                 item.save(async(err, item) => {
                     if (!err) {

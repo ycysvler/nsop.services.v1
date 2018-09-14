@@ -72,6 +72,7 @@ module.exports = class Schemas {
             vehicletype: {type: String},                        // 车辆分类
             vehicleclass:{type:String},                         // 1class ,2class
             vehiclescore: {type: Number},                       // 车型置信度
+            state:{type:Number},                                // 0：正常，-1：已经删除
             updatetime: {type: Date, index: true}               // 更新时间
         });
         this.Vehicle = conn.model('Vehicle', this.vehicleSchema);

@@ -25,7 +25,7 @@ module.exports = class VehicleLogic {
                     }
                 });
             } catch (err) {
-                reject(err)
+                reject(err);
             }
         });
     }

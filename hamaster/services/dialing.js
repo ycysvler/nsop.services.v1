@@ -64,6 +64,7 @@ async function run(){
                 }catch(ex){
                     console.log('\r\n', ex, '\r\n', e.stack);
                 }
+
                 if(result !== 'Not Found'){
                     hlogic.heartbeat(item.orgid, type, {
                         type:type,orgid:item.orgid, updatetime: moment()

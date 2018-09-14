@@ -70,6 +70,7 @@ module.exports = class Schemas {
             vehiclemaker: {type: String},                       // 厂家
             vehiclecolor: {type: String},                       // 车辆颜色
             vehicletype: {type: String},                        // 车辆分类
+            vehicleclass:{type:String},                         // 1class ,2class
             vehiclescore: {type: Number},                       // 车型置信度
             updatetime: {type: Date, index: true}               // 更新时间
         });

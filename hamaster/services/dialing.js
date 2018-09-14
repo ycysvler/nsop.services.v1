@@ -58,8 +58,12 @@ async function run(){
                 let type = item.type;
                 let path = item.path;
 
-                let result = await dialing(host, port, path);
-
+                let result = null;
+                try{
+                    result = await dialing(host, port, path);
+                }catch(ex){
+                    console.log('\r\n', ex, '\r\n', e.stack);
+                }
                 if(result !== 'Not Found'){
                     hlogic.heartbeat(item.orgid, type, {
                         type:type,orgid:item.orgid, updatetime: moment()
